@@ -9,7 +9,7 @@ class PatientProvider extends ChangeNotifier {
   String? errorMessage;
 
   String baseUrl = "https://flutter-amr.noviindus.in/api";
-  String? token; // set this from login
+  String? token;
 
   Future<void> fetchPatients() async {
     if (token == null) {
@@ -24,9 +24,7 @@ class PatientProvider extends ChangeNotifier {
     try {
       final response = await http.get(
         Uri.parse("$baseUrl/PatientList"),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
+        headers: {'Authorization': 'Bearer $token'},
       );
 
       if (response.statusCode == 200) {

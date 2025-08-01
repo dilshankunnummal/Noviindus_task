@@ -1,8 +1,17 @@
+import 'package:ayurveda_patients_app/presentation/providers/patient_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'core/app_routes.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => PatientProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -13,7 +22,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.splash,
-      routes: AppRoutes.routes,
+      onGenerateRoute: AppRoutes.onGenerateRoute,
+      builder: (context, child) {
+        // Wrap the Navigator subtree with your providers
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => PatientProvider()),
+          ],
+          child: child!,
+        );
+      },
     );
   }
 }

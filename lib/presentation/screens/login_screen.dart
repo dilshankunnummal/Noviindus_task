@@ -1,3 +1,4 @@
+import 'package:ayurveda_patients_app/core/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/app_colors.dart';
@@ -5,6 +6,8 @@ import '../widgets/custom_text_field.dart';
 import '../widgets/custom_button.dart';
 import '../providers/login_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -95,11 +98,16 @@ class LoginScreen extends StatelessWidget {
                         loginProvider.login(username, password).then((_) {
                           if (loginProvider.token != null) {
                             debugPrint("Login Successful. Token: ${loginProvider.token}");
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomeScreen(token: loginProvider.token!),
+                              ),
+                            );
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Login Successful!')),
                             );
 
-                            Navigator.pushReplacementNamed(context, '/home');
 
                           } else {
                             debugPrint("Login Failed. Error: ${loginProvider.errorMessage}");
