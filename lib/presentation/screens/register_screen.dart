@@ -8,9 +8,11 @@ import 'package:ayurveda_patients_app/presentation/widgets/custom_text.dart';
 import 'package:ayurveda_patients_app/presentation/widgets/custom_text_field.dart';
 import 'package:ayurveda_patients_app/presentation/widgets/treatment_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/login_provider.dart';
+import 'package:open_file/open_file.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -117,11 +119,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 hintText: 'Select Your Location',
                 label: 'Location',
                 value: registerProvider.selectedLocation,
-                items: registerProvider.locationOptions
-                    .map(
-                      (loc) => DropdownMenuItem(value: loc, child: Text(loc)),
-                )
-                    .toList(),
+                items:
+                    registerProvider.locationOptions
+                        .map(
+                          (loc) =>
+                              DropdownMenuItem(value: loc, child: Text(loc)),
+                        )
+                        .toList(),
                 onChanged: registerProvider.setSelectedLocation,
               ),
               const SizedBox(height: 10),
@@ -129,14 +133,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 hintText: 'Choose Your Branch',
                 label: 'Branch',
                 value: registerProvider.selectedBranch,
-                items: registerProvider.branchOptions
-                    .map(
-                      (branch) => DropdownMenuItem(
-                    value: branch,
-                    child: Text(branch),
-                  ),
-                )
-                    .toList(),
+                items:
+                    registerProvider.branchOptions
+                        .map(
+                          (branch) => DropdownMenuItem(
+                            value: branch,
+                            child: Text(branch),
+                          ),
+                        )
+                        .toList(),
                 onChanged: registerProvider.setSelectedBranch,
               ),
               const SizedBox(height: 10),
@@ -146,8 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     context: context,
                     builder: (context) {
                       return ListView(
-                        children:
-                        registerProvider.treatmentOptions.map((treatment) {
+                        children: registerProvider.treatmentOptions.map((treatment) {
                           if (treatment is Map<String, dynamic>) {
                             final id = treatment["id"] as int;
                             final name = treatment["name"] as String;
@@ -166,56 +170,82 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     },
                   );
                 },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          registerProvider.selectedTreatmentIds.isEmpty
-                              ? "Choose Treatments"
-                              : registerProvider.selectedTreatmentIds
-                              .map((id) => registerProvider.treatmentOptions
-                              .firstWhere((t) => t["id"] == id)["name"])
-                              .join(", "),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 8.0),
+                      child: CustomText(text: 'Treatments'),
+                    ),
+                    Container(
+                      width: 350,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: AppColors.textFieldBg,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppColors.borderGrey, width: 1),
                       ),
-                      const Icon(Icons.arrow_drop_down),
-                    ],
-                  ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              child: Text(
+                                registerProvider.selectedTreatmentIds.isEmpty
+                                    ? "Choose Treatments"
+                                    : registerProvider.selectedTreatmentIds
+                                    .map((id) => registerProvider.treatmentOptions
+                                    .firstWhere((t) => t["id"] == id)["name"])
+                                    .join(", "),
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.textGrey,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: Icon(Icons.arrow_drop_down, color: AppColors.textGrey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
+
               const SizedBox(height: 10),
               TreatmentsWidget(), // If you want to keep it, else remove
               const SizedBox(height: 10),
               CustomTextField(
                 label: 'Total Amount',
                 keyboardType: TextInputType.number,
-                onChanged: (val) =>
-                registerProvider.totalAmount = double.tryParse(val) ?? 0.0,
+                onChanged:
+                    (val) =>
+                        registerProvider.totalAmount =
+                            double.tryParse(val) ?? 0.0,
               ),
               const SizedBox(height: 10),
               CustomTextField(
                 label: 'Discount Amount',
                 keyboardType: TextInputType.number,
-                onChanged: (val) =>
-                registerProvider.discountAmount = double.tryParse(val) ?? 0.0,
+                onChanged:
+                    (val) =>
+                        registerProvider.discountAmount =
+                            double.tryParse(val) ?? 0.0,
               ),
               const SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 7),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: CustomText(
                     text: "Payment Method",
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    // fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
@@ -231,15 +261,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
               CustomTextField(
                 label: 'Advance Amount',
                 keyboardType: TextInputType.number,
-                onChanged: (val) =>
-                registerProvider.advanceAmount = double.tryParse(val) ?? 0.0,
+                onChanged:
+                    (val) =>
+                        registerProvider.advanceAmount =
+                            double.tryParse(val) ?? 0.0,
               ),
               const SizedBox(height: 10),
               CustomTextField(
                 label: 'Balance Amount',
                 keyboardType: TextInputType.number,
-                onChanged: (val) =>
-                registerProvider.balanceAmount = double.tryParse(val) ?? 0.0,
+                onChanged:
+                    (val) =>
+                        registerProvider.balanceAmount =
+                            double.tryParse(val) ?? 0.0,
               ),
               const SizedBox(height: 10),
               CustomDatePicker(
@@ -261,15 +295,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
               CustomButton(
                 text: 'Save',
                 onPressed: () async {
-                  bool success = await registerProvider.registerPatient();
+                  final file = await registerProvider.generatePdf(context);
+                  await OpenFile.open(file.path);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        success
-                            ? 'Patient registered successfully'
-                            : 'Failed to register patient',
-                      ),
-                    ),
+                    SnackBar(content: Text('PDF created')),
                   );
                 },
               ),
