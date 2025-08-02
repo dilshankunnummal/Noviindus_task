@@ -1,4 +1,5 @@
 import 'package:ayurveda_patients_app/core/app_colors.dart';
+import 'package:ayurveda_patients_app/presentation/screens/register_screen.dart';
 import 'package:ayurveda_patients_app/presentation/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -212,7 +213,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             onPressed: () {
-
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RegisterScreen(),
+                ),
+              );
             },
             child: CustomText(
               text: 'Register Patient',

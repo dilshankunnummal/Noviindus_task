@@ -3,24 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/app_colors.dart';
 
-class CustomTextField extends StatelessWidget {
-  final String? hintText;
+class CustomDropdown<T> extends StatelessWidget {
   final String? label;
-  final TextEditingController? controller;
-  final bool obscureText;
-  final TextInputType keyboardType;
-  final FormFieldValidator<String>? validator;
-  final ValueChanged<String>? onChanged;  // <--- Added this
+  final T? value;
+  final List<DropdownMenuItem<T>> items;
+  final ValueChanged<T?>? onChanged;
+  final String hintText;
+  final FormFieldValidator<T>? validator;
 
-  const CustomTextField({
+  const CustomDropdown({
     super.key,
-    this.hintText,
     this.label,
-    this.controller,
-    this.obscureText = false,
-    this.keyboardType = TextInputType.text,
+    required this.value,
+    required this.items,
+    required this.onChanged,
+    required this.hintText,
     this.validator,
-    this.onChanged,   // <--- Added this
   });
 
   @override
@@ -36,24 +34,18 @@ class CustomTextField extends StatelessWidget {
         Container(
           width: 350,
           height: 50,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             color: AppColors.textFieldBg,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: AppColors.borderGrey, width: 1),
           ),
-          child: TextFormField(
-            controller: controller,
-            obscureText: obscureText,
-            keyboardType: keyboardType,
+          child: DropdownButtonFormField<T>(
+            value: value,
+            items: items,
+            onChanged: onChanged,
             validator: validator,
-            onChanged: onChanged,  // <--- Added here
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: AppColors.textBlack,
-            ),
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 12),
               border: InputBorder.none,
               hintText: hintText,
               hintStyle: GoogleFonts.poppins(
@@ -62,6 +54,14 @@ class CustomTextField extends StatelessWidget {
                 color: AppColors.textGrey,
               ),
             ),
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: AppColors.textBlack,
+            ),
+            icon: const Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.primaryGreen,),
+            iconSize: 34,
+            isExpanded: true,
           ),
         ),
       ],

@@ -12,6 +12,8 @@ import 'home_screen.dart';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
+
+
   @override
   Widget build(BuildContext context) {
     final usernameController = TextEditingController();
@@ -52,7 +54,7 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 30),
 
                   CustomTextField(
-                    label: "Username", // API expects username
+                    label: "Username",
                     hintText: "Enter your username",
                     controller: usernameController,
                   ),
