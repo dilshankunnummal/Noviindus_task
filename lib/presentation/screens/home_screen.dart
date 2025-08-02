@@ -178,27 +178,34 @@ class _HomeScreenState extends State<HomeScreen> {
             return patient.name.toLowerCase().contains(searchText);
           }).toList();
 
-          if (filteredPatients.isEmpty) {
-            return const Center(child: Text('No patients found.'));
-          }
-
-          return ListView.builder(
-            itemCount: filteredPatients.length,
-            itemBuilder: (context, index) {
-              final patient = filteredPatients[index];
-              return BookingCard(
-                customerName: patient.name,
-                packageName: patient.branchName ?? "No package",
-                date: patient.dateTime ?? "No date",
-                bookedBy: patient.treatmentName ?? "N/A",
-                onViewDetails: () {
-
-                },
-              );
+          return RefreshIndicator(
+            onRefresh: () async {
+              await provider.fetchPatients();
             },
+            child: filteredPatients.isEmpty
+                ? ListView( // Required for pull-to-refresh to work when list is empty
+              children: const [
+                SizedBox(height: 300),
+                Center(child: Text('No patients found.')),
+              ],
+            )
+                : ListView.builder(
+              itemCount: filteredPatients.length,
+              itemBuilder: (context, index) {
+                final patient = filteredPatients[index];
+                return BookingCard(
+                  customerName: patient.name,
+                  packageName: patient.branchName ?? "No package",
+                  date: patient.dateTime ?? "No date",
+                  bookedBy: patient.treatmentName ?? "N/A",
+                  onViewDetails: () {},
+                );
+              },
+            ),
           );
         },
       ),
+
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16),
         color: Colors.white,

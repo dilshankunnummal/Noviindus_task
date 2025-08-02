@@ -97,6 +97,16 @@ class RegisterProvider extends ChangeNotifier {
     }
   }
 
+  // void setMaleCount(String value) {
+  //   maleCount = value;
+  //   notifyListeners();
+  // }
+  //
+  // void setFemaleCount(String value) {
+  //   femaleCount = value;
+  //   notifyListeners();
+  // }
+
   void toggleMaleTreatment(int id) {
     if (maleTreatmentIds.contains(id)) {
       maleTreatmentIds.remove(id);
@@ -214,6 +224,67 @@ class RegisterProvider extends ChangeNotifier {
     }
   }
 
+  // Future<bool> registerPatient(BuildContext context) async {
+  //   try {
+  //     final prefs = await SharedPreferences.getInstance();
+  //     final token = prefs.getString('auth_token');
+  //
+  //     if (token == null) {
+  //       print("No auth token found");
+  //       return false;
+  //     }
+  //
+  //     const hardcodedMaleTreatments = "2,3,4";
+  //     const hardcodedFemaleTreatments = "2,3,4";
+  //
+  //     final body = {
+  //       "name": name ?? "",
+  //       "excecutive": executive ?? "no data",
+  //       "payment": paymentMethod,
+  //       "phone": phone ?? "",
+  //       "address": address ?? "",
+  //       "total_amount": (totalAmount ?? 0.0).toString(),
+  //       "discount_amount": (discountAmount ?? 0.0).toString(),
+  //       "advance_amount": (advanceAmount ?? 0.0).toString(),
+  //       "balance_amount": (balanceAmount ?? 0.0).toString(),
+  //       "date_nd_time": formattedDateTime,
+  //       "id": "",
+  //       "branch": selectedBranch ?? "",
+  //       // Here send comma-separated string, because form data can't send lists
+  //       "male": maleTreatmentIds.isNotEmpty ? maleTreatmentIds.join(",") : "",
+  //       // Join femaleTreatmentIds list similarly
+  //       "female": femaleTreatmentIds.isNotEmpty ? femaleTreatmentIds.join(",") : "",
+  //       "treatments": selectedTreatmentIds.join(","),
+  //     };
+  //
+  //     print("Register Patient Request Body: ${jsonEncode(body)}");
+  //
+  //     final response = await http.post(
+  //       Uri.parse('$baseUrl/PatientUpdate'),
+  //       headers: {
+  //         "Content-Type": "application/x-www-form-urlencoded",
+  //         "Authorization": "Bearer $token",
+  //       },
+  //       body: jsonEncode(body),
+  //     );
+  //
+  //     print("Response Status Code: ${response.statusCode}");
+  //     print("Response Body: ${response.body}");
+  //
+  //     if (response.statusCode == 200) {
+  //       await generatePdf(context);
+  //       return true;
+  //     } else {
+  //       print("Failed to register patient, status code: ${response.statusCode}");
+  //       return false;
+  //     }
+  //   } catch (e, stacktrace) {
+  //     print("Exception in registerPatient: $e");
+  //     print("Stacktrace: $stacktrace");
+  //     return false;
+  //   }
+  // }
+
   Future<bool> registerPatient(BuildContext context) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -224,8 +295,9 @@ class RegisterProvider extends ChangeNotifier {
         return false;
       }
 
-      const hardcodedMaleTreatments = "2,3,4";
-      const hardcodedFemaleTreatments = "2,3,4";
+      final formattedDateTime = selectedDate != null
+          ? "${selectedDate!.toIso8601String().split('T')[0]}T${selectedHour.toString().padLeft(2, '0')}:${selectedMinute.toString().padLeft(2, '0')}:00"
+          : "";
 
       final body = {
         "name": name ?? "",
@@ -240,11 +312,9 @@ class RegisterProvider extends ChangeNotifier {
         "date_nd_time": formattedDateTime,
         "id": "",
         "branch": selectedBranch ?? "",
-        // Here send comma-separated string, because form data can't send lists
-        "male": maleTreatmentIds.isNotEmpty ? maleTreatmentIds.join(",") : "",
-        // Join femaleTreatmentIds list similarly
-        "female": femaleTreatmentIds.isNotEmpty ? femaleTreatmentIds.join(",") : "",
-        "treatments": selectedTreatmentIds.join(","),
+        "male": maleCount.toString() ?? "",       // from UI
+        "female": femaleCount.toString() ?? "",   // from UI
+        "treatments": selectedTreatmentIds.join(","), // comma-separated treatment IDs
       };
 
       print("Register Patient Request Body: ${jsonEncode(body)}");
@@ -255,7 +325,7 @@ class RegisterProvider extends ChangeNotifier {
           "Content-Type": "application/x-www-form-urlencoded",
           "Authorization": "Bearer $token",
         },
-        body: jsonEncode(body),
+        body: body,
       );
 
       print("Response Status Code: ${response.statusCode}");

@@ -268,6 +268,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 10),
               CustomTextField(
+                label: 'Male Count',
+                keyboardType: TextInputType.number,
+                onChanged: (val) => registerProvider.maleCount = int.tryParse(val) ?? 0,
+              ),
+              const SizedBox(height: 10),
+              CustomTextField(
+                label: 'Female Count',
+                keyboardType: TextInputType.number,
+                onChanged: (val) => registerProvider.femaleCount = int.tryParse(val) ?? 0,
+              ),
+              const SizedBox(height: 10),
+              CustomTextField(
                 label: 'Balance Amount',
                 keyboardType: TextInputType.number,
                 onChanged:
@@ -295,13 +307,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
               CustomButton(
                 text: 'Save',
                 onPressed: () async {
-                  final file = await registerProvider.generatePdf(context);
-                  await OpenFile.open(file.path);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('PDF created')),
-                  );
+                  bool success = await registerProvider.registerPatient(context);
+
+                  if (success) {
+                    final file = await registerProvider.generatePdf(context);
+                    await OpenFile.open(file.path);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Patient registered successfully')),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Failed to register patient')),
+                    );
+                  }
                 },
               ),
+
               const SizedBox(height: 20),
             ],
           ),
