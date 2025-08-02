@@ -267,18 +267,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             double.tryParse(val) ?? 0.0,
               ),
               const SizedBox(height: 10),
-              CustomTextField(
-                label: 'Male Count',
-                keyboardType: TextInputType.number,
-                onChanged: (val) => registerProvider.maleCount = int.tryParse(val) ?? 0,
-              ),
-              const SizedBox(height: 10),
-              CustomTextField(
-                label: 'Female Count',
-                keyboardType: TextInputType.number,
-                onChanged: (val) => registerProvider.femaleCount = int.tryParse(val) ?? 0,
-              ),
-              const SizedBox(height: 10),
+              // CustomTextField(
+              //   label: 'Male Count',
+              //   keyboardType: TextInputType.number,
+              //   onChanged: (val) => registerProvider.maleCount = int.tryParse(val) ?? 0,
+              // ),
+              // const SizedBox(height: 10),
+              // CustomTextField(
+              //   label: 'Female Count',
+              //   keyboardType: TextInputType.number,
+              //   onChanged: (val) => registerProvider.femaleCount = int.tryParse(val) ?? 0,
+              // ),
+              // const SizedBox(height: 10),
               CustomTextField(
                 label: 'Balance Amount',
                 keyboardType: TextInputType.number,
