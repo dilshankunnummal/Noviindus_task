@@ -22,8 +22,13 @@ class BookingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(
+        horizontal: width * 0.04,
+        vertical: width * 0.02,
+      ),
       decoration: BoxDecoration(
         color: Colors.grey[100],
         borderRadius: BorderRadius.circular(12),
@@ -39,7 +44,7 @@ class BookingCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(width * 0.04),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -48,14 +53,14 @@ class BookingCard extends StatelessWidget {
                     if (index != null)
                       CustomText(
                         text: '${index! + 1}. ',
-                        fontSize: 16,
+                        fontSize: width * 0.04,
                         fontWeight: FontWeight.w500,
                         color: Colors.black87,
                       ),
                     Expanded(
                       child: CustomText(
                         text: customerName,
-                        fontSize: 16,
+                        fontSize: width * 0.04,
                         fontWeight: FontWeight.w500,
                         color: Colors.black87,
                         maxLines: 1,
@@ -64,32 +69,34 @@ class BookingCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: width * 0.02),
                 CustomText(
                   text: packageName,
-                  fontSize: 14,
+                  fontSize: width * 0.035,
                   fontWeight: FontWeight.w500,
                   color: Colors.teal[700],
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 12),
-                Row(
+                SizedBox(height: width * 0.03),
+                Wrap(
+                  spacing: width * 0.05,
+                  runSpacing: width * 0.02,
                   children: [
                     SizedBox(
-                      width: 140, // Fixed width for date
+                      width: width * 0.38,
                       child: Row(
                         children: [
                           Icon(
                             Icons.calendar_today_outlined,
-                            size: 16,
+                            size: width * 0.04,
                             color: Colors.orange[600],
                           ),
-                          const SizedBox(width: 6),
+                          SizedBox(width: width * 0.015),
                           Expanded(
                             child: CustomText(
                               text: date.isNotEmpty ? date : "-",
-                              fontSize: 13,
+                              fontSize: width * 0.032,
                               color: Colors.grey[600],
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -98,21 +105,20 @@ class BookingCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 20),
                     SizedBox(
-                      width: 140, // Fixed width for bookedBy
+                      width: width * 0.38,
                       child: Row(
                         children: [
                           Icon(
                             Icons.person_outline,
-                            size: 16,
+                            size: width * 0.04,
                             color: Colors.orange[600],
                           ),
-                          const SizedBox(width: 6),
+                          SizedBox(width: width * 0.015),
                           Expanded(
                             child: CustomText(
                               text: bookedBy.isNotEmpty ? bookedBy : "-",
-                              fontSize: 13,
+                              fontSize: width * 0.032,
                               color: Colors.grey[600],
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -137,13 +143,16 @@ class BookingCard extends StatelessWidget {
               bottomRight: Radius.circular(12),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: EdgeInsets.symmetric(
+                horizontal: width * 0.04,
+                vertical: width * 0.03,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
                     text: 'View Booking details',
-                    fontSize: 14,
+                    fontSize: width * 0.035,
                     fontWeight: FontWeight.w500,
                     color: Colors.black87,
                     maxLines: 1,
@@ -152,7 +161,7 @@ class BookingCard extends StatelessWidget {
                   Icon(
                     Icons.chevron_right,
                     color: AppColors.primaryGreen,
-                    size: 20,
+                    size: width * 0.05,
                   ),
                 ],
               ),

@@ -28,13 +28,16 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(200),
+        preferredSize: Size.fromHeight(height * 0.25),
         child: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
@@ -43,7 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: width * 0.02,
+                    vertical: height * 0.005,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -54,35 +60,42 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                       ),
                       IconButton(
-                        icon: const Icon(Icons.notifications_none, color: Colors.black),
+                        icon: const Icon(Icons.notifications_none,
+                            color: Colors.black),
                         onPressed: () {},
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: width * 0.04,
+                    vertical: height * 0.01,
+                  ),
                   child: Row(
                     children: [
                       Expanded(
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.grey.shade400),
+                            borderRadius: BorderRadius.circular(width * 0.02),
+                            border:
+                            Border.all(color: Colors.grey.shade400, width: 1),
                           ),
                           child: TextField(
                             controller: searchController,
                             decoration: InputDecoration(
                               hintText: "Search...",
                               hintStyle: GoogleFonts.poppins(
-                                fontSize: 14,
+                                fontSize: width * 0.035,
                                 fontWeight: FontWeight.w400,
                               ),
-                              prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                              prefixIcon: const Icon(Icons.search,
+                                  color: Colors.grey),
                               suffixIcon: searchController.text.isNotEmpty
                                   ? IconButton(
-                                icon: const Icon(Icons.close, color: Colors.grey),
+                                icon: const Icon(Icons.close,
+                                    color: Colors.grey),
                                 onPressed: () {
                                   searchController.clear();
                                   setState(() {});
@@ -90,54 +103,60 @@ class _HomeScreenState extends State<HomeScreen> {
                               )
                                   : null,
                               border: InputBorder.none,
-                              contentPadding:
-                              const EdgeInsets.symmetric(vertical: 14, horizontal: 0),
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: height * 0.017,
+                              ),
                             ),
                             onChanged: (val) {
-                              setState(() {}); // update UI on search text change
+                              setState(() {});
                             },
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: width * 0.03),
                       Container(
-                        height: 50,
-                        width: 92,
+                        height: height * 0.06,
+                        width: width * 0.25,
                         decoration: BoxDecoration(
                           color: AppColors.primaryGreen,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(width * 0.02),
                         ),
                         child: Center(
                           child: CustomText(
                             text: 'Search',
                             color: Colors.white,
+                            fontSize: width * 0.035,
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: height * 0.012),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.symmetric(horizontal: width * 0.04),
                   child: Row(
                     children: [
                       Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        child: Padding(
+                          padding:
+                          EdgeInsets.symmetric(horizontal: width * 0.03),
                           child: CustomText(
                             text: 'Sort by:',
                             fontWeight: FontWeight.w500,
-                            fontSize: 16,
+                            fontSize: width * 0.04,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: width * 0.04),
                       Container(
-                        padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: width * 0.03,
+                          vertical: height * 0.012,
+                        ),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade400),
+                          border:
+                          Border.all(color: Colors.grey.shade400, width: 1),
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: Row(
@@ -145,11 +164,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text(
                               "Select Date",
                               style: GoogleFonts.poppins(
-                                fontSize: 14,
+                                fontSize: width * 0.035,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
-                            const SizedBox(width: 4),
+                            SizedBox(width: width * 0.01),
                             const Icon(Icons.keyboard_arrow_down,
                                 color: AppColors.primaryGreen),
                           ],
@@ -183,10 +202,10 @@ class _HomeScreenState extends State<HomeScreen> {
               await provider.fetchPatients();
             },
             child: filteredPatients.isEmpty
-                ? ListView( // Required for pull-to-refresh to work when list is empty
-              children: const [
-                SizedBox(height: 300),
-                Center(child: Text('No patients found.')),
+                ? ListView(
+              children: [
+                SizedBox(height: height * 0.4),
+                const Center(child: Text('No patients found.')),
               ],
             )
                 : ListView.builder(
@@ -205,25 +224,24 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       ),
-
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(width * 0.04),
         color: Colors.white,
         child: SizedBox(
           width: double.infinity,
-          height: 50,
+          height: height * 0.06,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryGreen,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(width * 0.02),
               ),
             ),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RegisterScreen(),
+                  builder: (context) => const RegisterScreen(),
                 ),
               );
             },
@@ -231,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
               text: 'Register Patient',
               color: Colors.white,
               fontWeight: FontWeight.w500,
-              fontSize: 16,
+              fontSize: width * 0.04,
             ),
           ),
         ),
